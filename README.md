@@ -1,135 +1,67 @@
 # Credit Card Fraud Detection System
 
-## Overview
+## Project Overview
 
-This project builds an end-to-end Machine Learning system to detect fraudulent credit card transactions.
+The system uses a trained Random Forest model with a saved preprocessing pipeline to classify transactions as:
 
-It combines data preprocessing, class balancing, feature selection, and multiple ML models, then deploys the best model in an interactive Streamlit dashboard for real-time prediction.
+* `0` - Normal
+* `1` - Fraud
 
----
+The dashboard is designed as a fraud intelligence cockpit where users can inspect transaction patterns, compare model metrics, score new transactions, and review high-risk cases.
 
 ## Dataset
 
-* **Total Transactions:** 284,807
-* **Fraud Cases:** Highly imbalanced dataset
-* **Features:** 30 anonymized features (V1–V28 + Time + Amount)
+The original credit card fraud dataset contains:
 
----
+* **284,807 transactions**
+* **30 anonymized features**: `Time`, `Amount`, and `V1` to `V28`
+* **Target column**: `Class`
+* A highly imbalanced fraud distribution
 
-## Objective
+Because the full `creditcard.csv` file is larger than GitHub's 100MB file limit, it is not included in the repository. The deployed app uses `creditcard_sample.csv`, a smaller sample dataset, so the dashboard can load quickly on Streamlit Cloud.
 
-To accurately classify transactions as:
+For full-data testing, upload the original `creditcard.csv` from the Streamlit sidebar.
 
-* **0 → Normal**
-* **1 → Fraud**
+## Streamlit Dashboard Features
 
-While focusing on maximizing **recall** to avoid missing fraudulent transactions.
+* Overview page with transaction, fraud, normal, and fraud-rate metrics
+* Model Lab for comparing Accuracy, Recall, and F1-score
+* Interactive Data Explorer with histograms, boxplots, violin plots, and correlation heatmap
+* CSV batch prediction with fraud probability and downloadable results
+* Manual transaction scoring using model features
+* Risk Monitor for reviewing suspicious transactions after batch scoring
 
----
+## Machine Learning Pipeline
 
-## Data Preprocessing
+The app loads these saved artifacts:
 
-* Handling class imbalance using **SMOTE**
-* Feature scaling using **StandardScaler**
-* Feature selection using **SelectKBest**
-* Splitting data:
-
-  * 80% Training
-  * 20% Testing
-
----
-
-## Exploratory Data Analysis (EDA)
-
-Key visualizations include:
-
-* Class distribution (Fraud vs Normal)
-* Correlation heatmap
-* Feature distributions
-* Impact of selected features
-
----
-
-## Machine Learning Models
-
-The following models were trained and evaluated:
-
-* Logistic Regression
-* Random Forest
-* XGBoost
-
----
+* `fraud_model.pkl` - trained fraud detection model
+* `scaler.pkl` - feature scaler
+* `selector.pkl` - feature selector
+* `features.pkl` - expected model feature order
+* `labels.pkl` - prediction label mapping
 
 ## Model Performance
 
-| Model               | Accuracy | Recall | F1-score |
-| ------------------- | -------- | ------ | -------- |
-| Logistic Regression | 0.986    | 0.91   | 0.19     |
-| Random Forest       | 0.999    | 0.84   | 0.78     |
-| XGBoost             | 0.998    | 0.88   | 0.61     |
+| Model | Accuracy | Recall | F1-score |
+| --- | --- | --- | --- |
+| Random Forest | 0.999192 | 0.846939 | 0.783019 |
+| XGBoost | 0.998086 | 0.887755 | 0.614841 |
+| Logistic Regression | 0.986833 | 0.918367 | 0.193548 |
 
-**Best Model: Random Forest**
-Provides the best balance between precision and recall.
-
----
-
-## Hyperparameter Tuning
-
-Random Forest was optimized using **RandomizedSearchCV**.
-
-**Best Parameters:**
-
-* `n_estimators = 50`
-* `max_depth = 15`
-* `min_samples_split = 5`
-
----
-
-## Final Model Results (After Tuning)
-
-* **Accuracy:** 0.9988
-* **Recall:** 0.87
-* **F1-score:** 0.72
-
-High recall ensures most fraud cases are detected.
-Balanced performance improves reliability.
-
----
-
-## Streamlit Dashboard
-
-An interactive web app was built using **Streamlit**.
-
-### Features:
-
-* Dashboard overview with key metrics
-* Interactive visualizations (Plotly)
-* Model comparison
-* Real-time fraud prediction
-* Upload CSV for batch prediction
-* Fraud probability and risk analysis
-* Download prediction results
-
----
-
-## Key Insights
-
-* Fraud detection requires focusing on **recall over accuracy**
-* Feature selection significantly improved performance
-* Random Forest achieved the best overall balance
-* The system can be used as a real-time fraud detection tool
-
----
+**Selected model:** Random Forest, because it provides the strongest F1-score while keeping accuracy high on an imbalanced fraud dataset.
 
 ## Technologies Used
 
 * Python
-* Pandas & NumPy
-* Matplotlib & Seaborn
-* Plotly
-* Scikit-learn
-* XGBoost
 * Streamlit
+* Pandas
+* NumPy
+* Scikit-learn
+* Plotly
+* Joblib
+* Matplotlib
+* Seaborn
 
 ---
 
@@ -148,4 +80,4 @@ python -m streamlit run credit_card_app
 
 You can access the deployed Streamlit app here:
 
-🔗 https://creditcard-mauuwr8v5smyrqvppf3vvs.streamlit.app/
+🔗 https://credit-card-fraud-detection-system-qfbegfz9rqt9nji5kau7t4.streamlit.app/
