@@ -1,5 +1,6 @@
 from pathlib import Path
 import warnings
+from io import BytesIO
 
 import joblib
 import numpy as np
@@ -281,11 +282,16 @@ def load_dataset(path):
     return pd.DataFrame()
 
 
+@st.cache_data(show_spinner=False)
+def parse_uploaded_csv(file_bytes):
+    return pd.read_csv(BytesIO(file_bytes))
+
+
 def read_uploaded_csv(uploaded_file):
     if uploaded_file is None:
         return None, None
     try:
-        return pd.read_csv(uploaded_file), None
+        return parse_uploaded_csv(uploaded_file.getvalue()), None
     except Exception as exc:
         return None, str(exc)
 
@@ -742,3 +748,5 @@ elif page == "Risk Monitor":
 
         st.markdown("#### 🕵️ Suspicious transaction queue")
         st.dataframe(flagged.sort_values("fraud_probability", ascending=False).head(50), use_container_width=True, hide_index=True)
+
+
