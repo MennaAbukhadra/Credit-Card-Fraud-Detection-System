@@ -5,8 +5,4 @@ scikit-learn
 matplotlib
 seaborn
 joblib
-<<<<<<< HEAD
 plotly
-=======
-plotly
->>>>>>> 802ae03bbbb103acfd07b0a239a3aa8d913dd5b6
