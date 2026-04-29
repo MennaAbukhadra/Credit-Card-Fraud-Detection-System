@@ -23,7 +23,7 @@ ARTIFACT_DIR_CANDIDATES = [
     APP_DIR.parent / "Pattern",
     Path.cwd(),
 ]
-DEFAULT_DATA_PATH = APP_DIR / "creditcard.csv"
+DEFAULT_DATA_PATH = APP_DIR / "creditcard_sample.csv"
 TARGET_COLUMN = "Class"
 FRAUD_LABEL = 1
 
@@ -481,7 +481,7 @@ st.markdown(
 
 
 if data.empty:
-    alert("No dataset loaded. Add creditcard.csv beside app.py or upload a CSV from the sidebar.", "warning")
+    alert("No dataset loaded. Add creditcard_sample.csv beside app.py or upload a CSV from the sidebar.", "warning")
 
 has_target = not data.empty and TARGET_COLUMN in data.columns
 total = len(data) if not data.empty else 0
@@ -748,5 +748,6 @@ elif page == "Risk Monitor":
 
         st.markdown("#### 🕵️ Suspicious transaction queue")
         st.dataframe(flagged.sort_values("fraud_probability", ascending=False).head(50), use_container_width=True, hide_index=True)
+
 
 
